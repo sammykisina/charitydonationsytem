@@ -98,7 +98,7 @@ const Layout = () => {
 
         <Modal
           modal_state={show_donate_modal}
-          modal_styles="w-[92vw] h-[17rem]"
+          modal_styles="w-[92vw] h-[20rem]"
           component={<Donate />}
         />
 

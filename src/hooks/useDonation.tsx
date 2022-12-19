@@ -40,6 +40,10 @@ const useDonation = () => {
             Cell: DateCell,
           },
           {
+            Header: "Donation Method",
+            accessor: "donation_method",
+          },
+          {
             Header: "Donation Amount (RM)",
             accessor: "amount",
           },
@@ -109,6 +113,7 @@ const useDonation = () => {
           amount: current_user_donation.data().donation_amount_in_MY,
           timestamp: current_user_donation.data().timestamp,
           project_id: current_user_donation.data().project_id,
+          donation_method: current_user_donation.data().donation_method,
 
           actions: [
             <div

@@ -1,6 +1,6 @@
 import { show_donate_modal_state } from "@/atoms/ModalAtoms";
 import { global_project_state } from "@/atoms/ProjectAtom";
-import { Error, ModalHeader } from "@/components";
+import { Error, ModalHeader, Select } from "@/components";
 import { LocalStorage, Notification } from "@/utils";
 import { useForm } from "react-hook-form";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -52,6 +52,7 @@ const Donate = () => {
       console.log("Success", data);
     },
   });
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const ENCRYPTION_SECRET_KEY = process.env.REACT_APP_ENCRYPTION_SECRET_KEY;
   const donor_info = LocalStorage.getStoreValue("donor_info")
     ? decrypt(LocalStorage.getStoreValue("donor_info"), ENCRYPTION_SECRET_KEY!)
@@ -106,6 +107,7 @@ const Donate = () => {
         project_status: global_project?.status,
         donation_amount_in_MY: value,
         donation_amount_in_CRYPTO: value * 0.00018,
+        donation_method: selectedPaymentMethod,
         region: donor_info.region,
         timestamp: serverTimestamp(),
         org_email: global_project?.org_email,
@@ -171,6 +173,18 @@ const Donate = () => {
           <label className="placeholder border">Donating To.</label>
         </div>
 
+        <Select
+          title="Select Payment Method"
+          options={["Crypto Wallet", "Credit Card"]}
+          selectWrapperStyles="w-[15rem] rounded-xl ring-c_gray p-[0.3rem]"
+          selectPanelStyles="ring-c_gray/40 shadow "
+          selected={selectedPaymentMethod}
+          setSelected={(option: any) => setSelectedPaymentMethod(option)}
+          multiple={false}
+          selectLabel=""
+          selectLabelStyles=""
+        />
+
         <div className="input-group">
           <input
             type="number"
@@ -192,25 +206,23 @@ const Donate = () => {
 
         {back_end_error && <Error error_message={error_message} />}
 
-        <div className="flex justify-end absolute -bottom-[1rem] right-[1rem]">
+        <div className="flex justify-end absolute -bottom-[3rem] right-[1rem]">
           <button
             className="primary_button"
             onClick={async () => {
-              // if (!isConnected) {
-              //   Notification.errorNotification(
-              //     "Please Connect To A MetaMask First."
-              //   );
-              //   return;
-              // }
+              if (selectedPaymentMethod === "") {
+                Notification.errorNotification(
+                  "Please Select The Payment Method You Like To Donate With"
+                );
+                return;
+              }
 
-              // sendTransaction?.();
-
-              // if (value >= 1000) {
-              //   Notification.errorNotification(
-              //     "Donation Amount Cannot Greater Than 1000 at a go."
-              //   );
-              //   return;
-              // }
+              if (value === 0 || value.toString() === "NaN") {
+                Notification.errorNotification(
+                  "Enter a Valid Donation Amount In RM"
+                );
+                return;
+              }
 
               updateProjectDetails();
 
