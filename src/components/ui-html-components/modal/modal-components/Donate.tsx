@@ -22,7 +22,6 @@ import {
 import { db } from "@/firebase";
 import { useUser } from "@/hooks";
 import { decrypt } from "n-krypta";
-import ReactGa from "react-ga";
 
 const Donate = () => {
   /**
@@ -130,13 +129,6 @@ const Donate = () => {
                 ? "inactive"
                 : doc_span.data()?.status,
           }).then(() => {
-            ReactGa.event({
-              category: "donation",
-              action: "donating",
-              label: "Donation Label",
-              value: value * 0.00018,
-            });
-
             console.log("done");
           });
         });
@@ -145,13 +137,6 @@ const Donate = () => {
       console.log("error", error);
     }
   };
-
-  ReactGa.event({
-    category: "donation",
-    action: "donating",
-    label: "Donation Label",
-    value: value,
-  });
 
   return (
     <section className="p-2 relative h-[15rem]">

@@ -26,9 +26,6 @@ import { Toaster } from "react-hot-toast";
 import ReactGa from "react-ga";
 import { useEffect } from "react";
 
-const TRACKING_ID = process.env.REACT_APP_TRACKING_ID;
-ReactGa.initialize(TRACKING_ID!);
-
 const Layout = () => {
   /**
    * Component States
